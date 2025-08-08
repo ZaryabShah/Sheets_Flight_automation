@@ -1,0 +1,7 @@
+"""
+Requirements file for Delta Flight Automation
+Install these packages using: pip install -r requirements.txt
+"""
+
+selenium>=4.15.0
+webdriver-manager>=4.0.0
