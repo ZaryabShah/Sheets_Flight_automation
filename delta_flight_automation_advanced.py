@@ -50,7 +50,7 @@ class DeltaFlightAutomationAdvanced:
             chrome_options.add_argument("--disable-extensions")
             chrome_options.add_argument("--disable-plugins")
             chrome_options.add_argument("--disable-images")  # Faster loading
-            chrome_options.add_argument("--disable-javascript")  # Remove if JS is needed for clicks
+            # Note: JavaScript is needed for Delta's calendar functionality
             
             # Window size and user agent
             chrome_options.add_argument("--window-size=1920,1080")
@@ -318,19 +318,24 @@ class DeltaFlightAutomationAdvanced:
             return False
     
     def select_departure_date(self, date_str="09/24/25"):
-        """Select departure date with intelligent date navigation"""
+        """Select departure date with advanced calendar navigation"""
         try:
             print(f"🔄 Selecting departure date: {date_str}")
             
             # Parse the date
             date_obj = datetime.strptime(date_str, "%m/%d/%y")
             target_day = date_obj.day
+            target_month = date_obj.month
+            target_year = date_obj.year
+            target_date_formatted = date_obj.strftime("%m/%d/%Y")
+            
+            print(f"📅 Target date: Day={target_day}, Month={target_month}, Year={target_year}")
             
             # Date field selectors
             date_selectors = [
-                # (By.XPATH, "//div[contains(@class, 'depart')]"),
                 (By.XPATH, "/html/body/idp-root/div/div[2]/idp-advance-search/div/div[1]/div[2]/idp-book-widget/div/ngc-book/div[1]/div/form/div[1]/div/div[1]/div[1]/div[3]/date-selection-view/div/div/div/div/div[2]"),
                 (By.CSS_SELECTOR, "div[class*='depart']"),
+                (By.XPATH, "//div[contains(@class, 'depart')]"),
                 (By.XPATH, "//input[contains(@placeholder, 'Depart')]")
             ]
             
@@ -339,31 +344,35 @@ class DeltaFlightAutomationAdvanced:
             
             time.sleep(3)
             
-            # Try to find and click the target day
-            day_selectors = [
-                (By.XPATH, f"//button[text()='{target_day}']"),
-                (By.XPATH, f"//td[text()='{target_day}']"),
-                (By.XPATH, f"//td[@aria-label='{target_day}']//button"),
-                (By.XPATH, f"//td[contains(@aria-label, '{target_day}')]"),
-                (By.CSS_SELECTOR, f"td[aria-label*='{target_day}']"),
-                (By.XPATH, f"//button[contains(@aria-label, '{target_day}')]")
-            ]
+            # Try multiple approaches to select the date
+            success = False
             
-            if not self.smart_wait_and_click(day_selectors, description=f"day {target_day}"):
-                print(f"⚠️ Could not find day {target_day}, trying alternative approach")
-                # If specific day not found, try clicking any available date
-                any_day_selectors = [
-                    (By.XPATH, "//td[contains(@class, 'available')]//button"),
-                    (By.XPATH, "//button[contains(@class, 'day')]"),
-                    (By.CSS_SELECTOR, "td.available button")
-                ]
-                self.smart_wait_and_click(any_day_selectors, description="any available day")
+            # Approach 1: Try Delta-specific date picker with data-date attribute
+            # print("🔍 Approach 1: Trying Delta date picker with data-date...")
+            # if self._select_date_by_data_attribute(target_date_formatted, target_day):
+            #     success = True
+            
+            # Approach 2: Try generic calendar navigation
+            if not success:
+                print("🔍 Approach 2: Trying calendar navigation...")
+                if self._select_date_by_navigation(target_day, target_month, target_year):
+                    success = True
+            
+            # Approach 3: Try clicking any available date if specific date fails
+            # if not success:
+            #     print("🔍 Approach 3: Trying to click any available date...")
+            #     if self._select_any_available_date():
+            #         success = True
+            
+            if not success:
+                print("❌ All date selection approaches failed")
+                return False
             
             time.sleep(1)
             
-            # Done button selectors
+            # Click Done button
             done_selectors = [
-                (By.XPATH, "//button[contains(text(), 'Done')]"),
+                # (By.XPATH, "//button[contains(text(), 'Done')]"),
                 (By.XPATH, "/html/body/idp-root/div/div[2]/idp-advance-search/div/div[1]/div[2]/idp-book-widget/div/ngc-book/div[1]/div/form/div[1]/div/div[1]/div[1]/div[3]/date-selection-view/div/div/div/div/div[4]/div/div[3]/button[2]"),
                 (By.CSS_SELECTOR, "button[class*='done']"),
                 (By.XPATH, "//button[contains(@class, 'done')]")
@@ -379,6 +388,368 @@ class DeltaFlightAutomationAdvanced:
             print(f"❌ Failed to select departure date {date_str}: {e}")
             return False
     
+    def _select_date_by_data_attribute(self, target_date_formatted, target_day):
+        """Try to select date using data-date attribute (Delta-specific approach)"""
+        try:
+            # Try Delta's date picker format with data-date
+            selectors = [
+                f"td.dl-datepicker-available-day a[data-date='{target_date_formatted}']",
+                f"a[data-date='{target_date_formatted}']",
+                f"td[data-date='{target_date_formatted}']",
+                f"button[data-date='{target_date_formatted}']"
+            ]
+            
+            for selector in selectors:
+                try:
+                    element = WebDriverWait(self.driver, 2).until(
+                        EC.element_to_be_clickable((By.CSS_SELECTOR, selector))
+                    )
+                    element.click()
+                    print(f"✅ Selected date using data-attribute: {selector}")
+                    return True
+                except TimeoutException:
+                    continue
+            
+            # If exact date not found, try navigating months and then clicking
+            return self._navigate_and_select_by_data_attribute(target_date_formatted, target_day)
+            
+        except Exception as e:
+            print(f"⚠️ Data attribute approach failed: {e}")
+            return False
+    
+    def _navigate_and_select_by_data_attribute(self, target_date_formatted, target_day, max_attempts=12):
+        """Navigate through months to find the target date"""
+        try:
+            for attempt in range(max_attempts):
+                # Try to find the date in current month view
+                selectors = [
+                    f"td.dl-datepicker-available-day a[data-date='{target_date_formatted}']",
+                    f"a[data-date='{target_date_formatted}']"
+                ]
+                
+                for selector in selectors:
+                    try:
+                        element = WebDriverWait(self.driver, 1).until(
+                            EC.element_to_be_clickable((By.CSS_SELECTOR, selector))
+                        )
+                        element.click()
+                        print(f"✅ Found and clicked date after {attempt} navigation attempts")
+                        return True
+                    except TimeoutException:
+                        continue
+                
+                # If not found, try to navigate to next month
+                next_selectors = [
+                    "button[aria-label*='next' i]",
+                    "button[aria-label*='Next' i]",
+                    ".dl-datepicker-next",
+                    "button[class*='next']",
+                    "button:contains('Next')"
+                ]
+                
+                navigated = False
+                for next_selector in next_selectors:
+                    try:
+                        next_button = WebDriverWait(self.driver, 1).until(
+                            EC.element_to_be_clickable((By.CSS_SELECTOR, next_selector))
+                        )
+                        next_button.click()
+                        time.sleep(0.5)
+                        navigated = True
+                        break
+                    except TimeoutException:
+                        continue
+                
+                if not navigated:
+                    print("⚠️ Could not navigate to next month")
+                    break
+            
+            return False
+            
+        except Exception as e:
+            print(f"⚠️ Navigation approach failed: {e}")
+            return False
+    
+    def _select_date_by_navigation(self, target_day, target_month, target_year):
+        """Try generic calendar navigation approach"""
+        try:
+            # Get current month/year from calendar
+            month_year_selectors = [
+                ".dl-datepicker-title",
+                ".calendar-title",
+                "[class*='month-year']",
+                "[class*='calendar-header']"
+            ]
+            
+            current_month_element = None
+            for selector in month_year_selectors:
+                try:
+                    current_month_element = WebDriverWait(self.driver, 2).until(
+                        EC.presence_of_element_located((By.CSS_SELECTOR, selector))
+                    )
+                    break
+                except TimeoutException:
+                    continue
+            
+            if not current_month_element:
+                print("⚠️ Could not find calendar header")
+                return False
+            
+            # Navigate to correct month/year (simplified - just try clicking next a few times)
+            for _ in range(6):  # Try up to 6 months ahead
+                # Try to click the target day
+                day_selectors = [
+                    f"td.dl-datepicker-available-day a:contains('{target_day}')",
+                    f"td[class*='available'] a[text()='{target_day}']",
+                    f"button[text()='{target_day}']",
+                    f"a[text()='{target_day}']",
+                    f"td:contains('{target_day}'):not([class*='disabled'])"
+                ]
+                
+                for selector in day_selectors:
+                    try:
+                        # Convert CSS selector to XPath for text matching
+                        xpath_selector = f"//td[contains(@class, 'available')]//a[text()='{target_day}'] | //button[text()='{target_day}'] | //a[text()='{target_day}']"
+                        element = WebDriverWait(self.driver, 1).until(
+                            EC.element_to_be_clickable((By.XPATH, xpath_selector))
+                        )
+                        element.click()
+                        print(f"✅ Selected day {target_day} using navigation")
+                        return True
+                    except TimeoutException:
+                        continue
+                
+                # Navigate to next month
+                next_selectors = [
+                    "button[aria-label*='next' i]",
+                    ".dl-datepicker-next",
+                    "button[class*='next']"
+                ]
+                
+                navigated = False
+                for next_selector in next_selectors:
+                    try:
+                        next_button = WebDriverWait(self.driver, 1).until(
+                            EC.element_to_be_clickable((By.CSS_SELECTOR, next_selector))
+                        )
+                        next_button.click()
+                        time.sleep(0.5)
+                        navigated = True
+                        break
+                    except TimeoutException:
+                        continue
+                
+                if not navigated:
+                    break
+            
+            return False
+            
+        except Exception as e:
+            print(f"⚠️ Calendar navigation failed: {e}")
+            return False
+    
+    def _select_any_available_date(self):
+        """Fallback: select any available date"""
+        try:
+            print("🔍 Looking for any available date...")
+            
+            # Try various selectors for available dates
+            available_date_selectors = [
+                "td.dl-datepicker-available-day a",
+                "td[class*='available'] a",
+                "td[class*='available'] button",
+                "button[class*='available']",
+                "a[class*='available']",
+                "td:not([class*='disabled']) a",
+                "td:not([class*='disabled']) button"
+            ]
+            
+            for selector in available_date_selectors:
+                try:
+                    elements = self.driver.find_elements(By.CSS_SELECTOR, selector)
+                    if elements:
+                        # Click the first available date
+                        elements[0].click()
+                        selected_text = elements[0].text if elements[0].text else "unknown"
+                        print(f"✅ Selected first available date: {selected_text}")
+                        return True
+                except Exception as e:
+                    print(f"⚠️ Selector {selector} failed: {e}")
+                    continue
+            
+            # Try XPath approach for available dates
+            xpath_selectors = [
+                "//td[contains(@class, 'available')]//a",
+                "//td[not(contains(@class, 'disabled'))]//a",
+                "//td[not(contains(@class, 'disabled'))]//button",
+                "//a[contains(@aria-label, '2025')]",
+                "//button[contains(@aria-label, '2025')]"
+            ]
+            
+            for xpath in xpath_selectors:
+                try:
+                    elements = self.driver.find_elements(By.XPATH, xpath)
+                    if elements:
+                        elements[0].click()
+                        print(f"✅ Selected available date using XPath")
+                        return True
+                except Exception as e:
+                    continue
+            
+            return False
+            
+        except Exception as e:
+            print(f"⚠️ Fallback date selection failed: {e}")
+            return False
+    
+    def select_next_available_date(self):
+        """Select the next available date from today onwards"""
+        try:
+            print("🔄 Selecting next available date...")
+            
+            # Date field selectors
+            date_selectors = [
+                (By.XPATH, "/html/body/idp-root/div/div[2]/idp-advance-search/div/div[1]/div[2]/idp-book-widget/div/ngc-book/div[1]/div/form/div[1]/div/div[1]/div[1]/div[3]/date-selection-view/div/div/div/div/div[2]"),
+                (By.CSS_SELECTOR, "div[class*='depart']"),
+                (By.XPATH, "//div[contains(@class, 'depart')]")
+            ]
+            
+            if not self.smart_wait_and_click(date_selectors, description="departure date field"):
+                return False
+            
+            time.sleep(3)
+            
+            # Find the first available date and click it
+            today = datetime.now()
+            
+            # Try different strategies to find available dates
+            strategies = [
+                self._find_next_available_delta_format,
+                self._find_next_available_generic,
+                self._find_next_available_by_text
+            ]
+            
+            for i, strategy in enumerate(strategies, 1):
+                print(f"🔍 Trying strategy {i} to find next available date...")
+                if strategy():
+                    break
+            else:
+                print("❌ All strategies failed to find available date")
+                return False
+            
+            time.sleep(1)
+            
+            # Click Done button
+            done_selectors = [
+                (By.XPATH, "//button[contains(text(), 'Done')]"),
+                (By.XPATH, "/html/body/idp-root/div/div[2]/idp-advance-search/div/div[1]/div[2]/idp-book-widget/div/ngc-book/div[1]/div/form/div[1]/div/div[1]/div[1]/div[3]/date-selection-view/div/div/div/div/div[4]/div/div[3]/button[2]"),
+                (By.CSS_SELECTOR, "button[class*='done']")
+            ]
+            
+            if not self.smart_wait_and_click(done_selectors, description="Done button"):
+                return False
+            
+            print("✅ Successfully selected next available date")
+            return True
+            
+        except Exception as e:
+            print(f"❌ Failed to select next available date: {e}")
+            return False
+    
+    def _find_next_available_delta_format(self):
+        """Strategy 1: Look for Delta-specific available date format"""
+        try:
+            selectors = [
+                "td.dl-datepicker-available-day a",
+                "td[class*='available'] a",
+                "a[data-date]",
+                "button[data-date]"
+            ]
+            
+            for selector in selectors:
+                elements = self.driver.find_elements(By.CSS_SELECTOR, selector)
+                if elements:
+                    # Find the first date that's today or later
+                    for element in elements:
+                        try:
+                            data_date = element.get_attribute("data-date")
+                            if data_date:
+                                # Parse the date and check if it's today or later
+                                element_date = datetime.strptime(data_date, "%m/%d/%Y")
+                                if element_date.date() >= datetime.now().date():
+                                    element.click()
+                                    print(f"✅ Selected date: {data_date}")
+                                    return True
+                            else:
+                                # If no data-date, just click the first available
+                                element.click()
+                                text = element.text or "unknown"
+                                print(f"✅ Selected available date: {text}")
+                                return True
+                        except Exception:
+                            continue
+            return False
+        except Exception as e:
+            print(f"⚠️ Delta format strategy failed: {e}")
+            return False
+    
+    def _find_next_available_generic(self):
+        """Strategy 2: Generic approach to find available dates"""
+        try:
+            # Look for clickable elements that could be dates
+            selectors = [
+                "td:not([class*='disabled']) a",
+                "td:not([class*='disabled']) button",
+                "button[class*='available']",
+                "a[class*='available']",
+                "[aria-label*='2025']:not([class*='disabled'])"
+            ]
+            
+            for selector in selectors:
+                elements = self.driver.find_elements(By.CSS_SELECTOR, selector)
+                if elements:
+                    for element in elements:
+                        try:
+                            # Check if it looks like a date (1-31)
+                            text = element.text.strip()
+                            if text.isdigit() and 1 <= int(text) <= 31:
+                                element.click()
+                                print(f"✅ Selected date: {text}")
+                                return True
+                        except Exception:
+                            continue
+            return False
+        except Exception as e:
+            print(f"⚠️ Generic strategy failed: {e}")
+            return False
+    
+    def _find_next_available_by_text(self):
+        """Strategy 3: Find by text content"""
+        try:
+            # Look for elements with day numbers
+            for day in range(1, 32):
+                xpath_selectors = [
+                    f"//a[text()='{day}' and not(ancestor::*[contains(@class, 'disabled')])]",
+                    f"//button[text()='{day}' and not(ancestor::*[contains(@class, 'disabled')])]",
+                    f"//td[not(contains(@class, 'disabled'))]//a[text()='{day}']",
+                    f"//td[not(contains(@class, 'disabled'))]//button[text()='{day}']"
+                ]
+                
+                for xpath in xpath_selectors:
+                    try:
+                        element = WebDriverWait(self.driver, 0.5).until(
+                            EC.element_to_be_clickable((By.XPATH, xpath))
+                        )
+                        element.click()
+                        print(f"✅ Selected date: {day}")
+                        return True
+                    except TimeoutException:
+                        continue
+            return False
+        except Exception as e:
+            print(f"⚠️ Text-based strategy failed: {e}")
+            return False
+    
     def search_flights(self):
         """Click search button to find flights"""
         try:
@@ -386,11 +757,11 @@ class DeltaFlightAutomationAdvanced:
             
             # Search button selectors
             search_selectors = [
-                (By.XPATH, "//button[contains(text(), 'Search')]"),
+                # (By.XPATH, "//button[contains(text(), 'Search')]"),
                 (By.XPATH, "/html/body/idp-root/div/div[2]/idp-advance-search/div/div[1]/div[2]/idp-book-widget/div/ngc-book/div[1]/div/form/div[2]/div/div[2]/div[2]/button"),
-                (By.CSS_SELECTOR, "button[class*='search']"),
-                (By.XPATH, "//button[contains(@class, 'search')]"),
-                (By.XPATH, "//input[@type='submit']")
+                # (By.CSS_SELECTOR, "button[class*='search']"),
+                # (By.XPATH, "//button[contains(@class, 'search')]"),
+                # (By.XPATH, "//input[@type='submit']")
             ]
             
             if not self.smart_wait_and_click(search_selectors, description="search button"):
@@ -487,7 +858,7 @@ class DeltaFlightAutomationAdvanced:
             print(f"❌ Failed to click price tab: {e}")
             return False
     
-    def run_automation(self, from_airport="DEL", to_airport="BCN", trip_type="one_way", date="09/24/25"):
+    def run_automation(self, from_airport="DEL", to_airport="BCN", trip_type="one_way", date="09/24/25", use_next_available=True):
         """Run the complete automation with comprehensive error handling"""
         try:
             print("🚀 Starting Enhanced Delta Flight Automation")
@@ -497,6 +868,7 @@ class DeltaFlightAutomationAdvanced:
             print(f"   To: {to_airport}")
             print(f"   Trip Type: {trip_type}")
             print(f"   Date: {date}")
+            print(f"   Use Next Available: {use_next_available}")
             print("=" * 60)
             
             steps = [
@@ -504,7 +876,7 @@ class DeltaFlightAutomationAdvanced:
                 ("Select From Airport", lambda: self.select_from_airport(from_airport)),
                 ("Select To Airport", lambda: self.select_to_airport(to_airport)),
                 ("Select Trip Type", lambda: self.select_trip_type(trip_type)),
-                ("Select Departure Date", lambda: self.select_departure_date(date)),
+                ("Select Departure Date", lambda: self._select_date_with_fallback(date, use_next_available)),
                 ("Search Flights", lambda: self.search_flights()),
                 ("Wait for Results", lambda: self.wait_for_results())
             ]
@@ -539,6 +911,24 @@ class DeltaFlightAutomationAdvanced:
             print(f"\n❌ Automation failed with error: {e}")
             return False
     
+    def _select_date_with_fallback(self, date, use_next_available):
+        """Select date with fallback to next available date"""
+        try:
+            # First try to select the specific date
+            if self.select_departure_date(date):
+                return True
+            
+            # If specific date failed and fallback is enabled, try next available
+            if use_next_available:
+                print("🔄 Specific date failed, trying next available date...")
+                return self.select_next_available_date()
+            
+            return False
+            
+        except Exception as e:
+            print(f"❌ Date selection with fallback failed: {e}")
+            return False
+    
     def close(self):
         """Close browser with cleanup"""
         try:
@@ -556,11 +946,12 @@ def main():
     
     # Default configuration - modify as needed
     config = {
-        "from_airport": "DEL",      # Delhi
-        "to_airport": "BCN",        # Barcelona  
-        "trip_type": "one_way",     # one_way, round_trip, multi_city
-        "date": "09/24/25",         # MM/DD/YY format
-        "headless": False           # Set to True for headless mode
+        "from_airport": "MCO",          # Orlando
+        "to_airport": "BCN",            # Barcelona
+        "trip_type": "one_way",         # one_way, round_trip, multi_city
+        "date": "09/24/25",             # MM/DD/YY format
+        "use_next_available": True,     # If specific date fails, use next available
+        "headless": False               # Set to True for headless mode
     }
     
     print(f"Configuration:")
@@ -579,7 +970,8 @@ def main():
             from_airport=config["from_airport"],
             to_airport=config["to_airport"],
             trip_type=config["trip_type"],
-            date=config["date"]
+            date=config["date"],
+            use_next_available=config["use_next_available"]
         )
         
         if success:
