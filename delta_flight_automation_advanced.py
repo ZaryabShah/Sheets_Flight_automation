@@ -19,25 +19,33 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 
 class DeltaFlightAutomationAdvanced:
-    def __init__(self, headless=False, timeout=30):
+    def __init__(self, headless=True, timeout=30, use_proxy=True):
         """
         Initialize the Delta Flight Automation with WebDriver Manager
         
         Args:
             headless (bool): Run browser in headless mode
             timeout (int): Default timeout for WebDriverWait
+            use_proxy (bool): Use proxy server for requests
         """
         self.timeout = timeout
         self.driver = None
         self.wait = None
+        self.use_proxy = False
         self.setup_driver(headless)
         
     def setup_driver(self, headless=False):
-        """Setup Chrome WebDriver with automatic driver management"""
+        """Setup Chrome WebDriver with automatic driver management and optional proxy"""
         try:
             print("🔄 Setting up ChromeDriver...")
             
             chrome_options = Options()
+            
+            # Proxy configuration if enabled
+            if self.use_proxy:
+                proxy_server = "https://us-pr.oxylabs.io:10000"
+                print(f"🌐 Using proxy: {proxy_server}")
+                chrome_options.add_argument(f'--proxy-server={proxy_server}')
             
             # Basic options for stability
             chrome_options.add_argument("--no-sandbox")
@@ -47,9 +55,9 @@ class DeltaFlightAutomationAdvanced:
             chrome_options.add_experimental_option('useAutomationExtension', False)
             
             # Performance optimizations
-            chrome_options.add_argument("--disable-extensions")
-            chrome_options.add_argument("--disable-plugins")
-            chrome_options.add_argument("--disable-images")  # Faster loading
+            # chrome_options.add_argument("--disable-extensions")
+            # chrome_options.add_argument("--disable-plugins")
+            # chrome_options.add_argument("--disable-images")  # Faster loading
             # Note: JavaScript is needed for Delta's calendar functionality
             
             # Window size and user agent
@@ -67,11 +75,14 @@ class DeltaFlightAutomationAdvanced:
             self.driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
             self.wait = WebDriverWait(self.driver, self.timeout)
             
-            print("✅ Chrome WebDriver initialized successfully with WebDriver Manager")
+            proxy_status = "with proxy" if self.use_proxy else "without proxy"
+            print(f"✅ Chrome WebDriver initialized successfully {proxy_status}")
             
         except Exception as e:
             print(f"❌ Error setting up WebDriver: {e}")
             print("💡 Make sure Chrome browser is installed on your system")
+            if self.use_proxy:
+                print("💡 Check your proxy connection")
             raise
     
     def smart_wait_and_click(self, selectors, timeout=None, description="element"):
@@ -951,19 +962,25 @@ def main():
         "trip_type": "one_way",         # one_way, round_trip, multi_city
         "date": "09/24/25",             # MM/DD/YY format
         "use_next_available": True,     # If specific date fails, use next available
-        "headless": False               # Set to True for headless mode
+        "headless": False,              # Set to True for headless mode
+        "use_proxy": False              # Set to True to use Oxylabs proxy
     }
     
     print(f"Configuration:")
     for key, value in config.items():
         print(f"  {key}: {value}")
+    if config["use_proxy"]:
+        print("  proxy_server: https://pr.oxylabs.io:10000")
     print("=" * 50)
     
     automation = None
     
     try:
         # Initialize automation
-        automation = DeltaFlightAutomationAdvanced(headless=config["headless"])
+        automation = DeltaFlightAutomationAdvanced(
+            headless=config["headless"],
+            use_proxy=config["use_proxy"]
+        )
         
         # Run automation
         success = automation.run_automation(
