@@ -68,3 +68,250 @@ than after waiting few seconds so the results will come and than dump whole html
 than we stop!
 
 make completely robust setup using selenium!
+
+
+
+
+
+
+next promppt
+
+
+
+I want you to make scrappey browser workflow like this
+
+{
+"cmd": 
+"request.get",
+"url": 
+"https://httpbin.rs/get",
+"browserActions": 
+[
+{
+"type": 
+"goto",
+"url": 
+"https://example.com/page"
+},
+{
+"type": 
+"wait",
+"wait": 
+3
+},
+{
+"type": 
+"wait_for_selector",
+"cssSelector": 
+"#target-element",
+"timeout": 
+30000
+},
+{
+"type": 
+"click",
+"cssSelector": 
+"#example-button"
+},
+{
+"type": 
+"type",
+"cssSelector": 
+"#input-field",
+"text": 
+"Example text"
+},
+{
+"type": 
+"click",
+"cssSelector": 
+"#example-button"
+},
+{
+"type": 
+"click",
+"cssSelector": 
+"#example-button"
+},
+{
+"type": 
+"type",
+"cssSelector": 
+"#input-field",
+"text": 
+"Example text"
+},
+{
+"type": 
+"click",
+"cssSelector": 
+"#example-button"
+},
+{
+"type": 
+"click",
+"cssSelector": 
+"#example-button"
+},
+{
+"type": 
+"click",
+"cssSelector": 
+"#example-button"
+},
+{
+"type": 
+"click",
+"cssSelector": 
+"#example-button"
+},
+{
+"type": 
+"click",
+"cssSelector": 
+"#example-button"
+},
+{
+"type": 
+"click",
+"cssSelector": 
+"#example-button"
+},
+{
+"type": 
+"click",
+"cssSelector": 
+"#example-button"
+}
+]
+}
+
+
+with my endpoint
+https://publisher.scrappey.com/api/v1?key=CPLgrNtC9kgMlgvBpMLydXJU3wIYVhD9bvxKn0ZO8SRWPNJvpgu4Ezhwki1U
+
+import requests
+
+headers = {
+    'Content-Type': 'application/json',
+}
+
+params = {
+    'key': 'CPLgrNtC9kgMlgvBpMLydXJU3wIYVhD9bvxKn0ZO8SRWPNJvpgu4Ezhwki1U',
+}
+
+json_data = {
+    'cmd': 'request.get',
+    'url': 'https://httpbin.rs/get',
+    'browserActions': [
+        {
+            'type': 'goto',
+            'url': 'https://example.com/page',
+        },
+        {
+            'type': 'wait',
+            'wait': 3,
+        },
+        {
+            'type': 'wait_for_selector',
+            'cssSelector': '#target-element',
+            'timeout': 30000,
+        },
+        {
+            'type': 'click',
+            'cssSelector': '#example-button',
+        },
+        {
+            'type': 'type',
+            'cssSelector': '#input-field',
+            'text': 'Example text',
+        },
+        {
+            'type': 'click',
+            'cssSelector': '#example-button',
+        },
+        {
+            'type': 'click',
+            'cssSelector': '#example-button',
+        },
+        {
+            'type': 'type',
+            'cssSelector': '#input-field',
+            'text': 'Example text',
+        },
+        {
+            'type': 'click',
+            'cssSelector': '#example-button',
+        },
+        {
+            'type': 'click',
+            'cssSelector': '#example-button',
+        },
+        {
+            'type': 'click',
+            'cssSelector': '#example-button',
+        },
+        {
+            'type': 'click',
+            'cssSelector': '#example-button',
+        },
+        {
+            'type': 'click',
+            'cssSelector': '#example-button',
+        },
+        {
+            'type': 'click',
+            'cssSelector': '#example-button',
+        },
+        {
+            'type': 'click',
+            'cssSelector': '#example-button',
+        },
+    ],
+}
+
+response = requests.post('https://publisher.scrappey.com/api/v1', params=params, headers=headers, json=json_data)
+
+# Note: json_data will not be serialized by requests
+# exactly as it was in the original request.
+#data = '{\n  "cmd": "request.get",\n  "url": "https://httpbin.rs/get",\n  "browserActions": [\n    {\n      "type": "goto",\n      "url": "https://example.com/page"\n    },\n    {\n      "type": "wait",\n      "wait": 3\n    },\n    {\n      "type": "wait_for_selector",\n      "cssSelector": "#target-element",\n      "timeout": 30000\n    },\n    {\n      "type": "click",\n      "cssSelector": "#example-button"\n    },\n    {\n      "type": "type",\n      "cssSelector": "#input-field",\n      "text": "Example text"\n    },\n    {\n      "type": "click",\n      "cssSelector": "#example-button"\n    },\n    {\n      "type": "click",\n      "cssSelector": "#example-button"\n    },\n    {\n      "type": "type",\n      "cssSelector": "#input-field",\n      "text": "Example text"\n    },\n    {\n      "type": "click",\n      "cssSelector": "#example-button"\n    },\n    {\n      "type": "click",\n      "cssSelector": "#example-button"\n    },\n    {\n      "type": "click",\n      "cssSelector": "#example-button"\n    },\n    {\n      "type": "click",\n      "cssSelector": "#example-button"\n    },\n    {\n      "type": "click",\n      "cssSelector": "#example-button"\n    },\n    {\n      "type": "click",\n      "cssSelector": "#example-button"\n    },\n    {\n      "type": "click",\n      "cssSelector": "#example-button"\n    }\n  ]\n}'
+#response = requests.post('https://publisher.scrappey.com/api/v1', params=params, headers=headers, data=data)
+
+
+
+
+you already have selenium so you know what workflow we want so help me integrate it!
+I can provide you elements for all and you can see!
+<a aria-haspopup="true" href="javascript:void(0);" id="fromAirportName" ngc-airport-lookup-directive="" class="focusable-element from-container col-5 col-lg-5 col-sm-5 order-1 p-0 no-underline ng-tns-c84-2" aria-describedby=""><span class="airport-code d-block ng-tns-c84-2">DEL</span><span class="sr-only ng-tns-c84-2">Departure Airport or City</span><span class="airport-desc ng-tns-c84-2">Delhi, India</span><input name="fromAirportCode" type="hidden" value="DEL" class="ng-tns-c84-2 ng-untouched ng-pristine ng-valid"><input name="fromCountryCode" type="hidden" class="ng-tns-c84-2 ng-untouched ng-pristine ng-valid" value="IN"><input name="fromCity" type="hidden" value="Delhi, India" class="ng-tns-c84-2 ng-untouched ng-pristine ng-valid"></a>
+
+
+<input aria-invalid="false" autocomplete="off" id="search_input" ngmodel="" pattern="^[a-zA-Z.\s]+$" type="text" class="form-control mr-0 input-mobile-tab-class airport-search ng-pristine ng-valid ng-touched searchFieldDataBorder" aria-describedby="resultStatus" placeholder="City or Airport">
+
+<a href="javascript:void(0);" tabindex="-1" class="airportLookup-list"><span class="airport-code col-sm-2 col-md-1 col-lg-2 col-xl-2 col-xxl-2 pl-0 pr-3"> DEL </span><span class="airport-city col-sm-10 col-md-11 col-lg-10 col-xl-10 col-xxl-10 pl-0"> Delhi, India </span></a>
+
+<a aria-haspopup="true" href="javascript:void(0);" id="toAirportName" ngc-airport-lookup-directive="" class="to-container col-5 col-lg-5 col-sm-5 order-3 p-0 no-underline ng-tns-c84-2" aria-describedby=""><span class="airport-code d-block ng-tns-c84-2">To</span><span class="sr-only ng-tns-c84-2">Destination Airport or City</span><span class="airport-desc ng-tns-c84-2">Your Destination</span><input name="arrivalCity" type="hidden" class="ng-tns-c84-2 ng-untouched ng-pristine ng-invalid" value=""><input name="toCountryCode" type="hidden" class="ng-tns-c84-2 ng-untouched ng-pristine ng-valid" value=""><input name="toCity" type="hidden" class="ng-tns-c84-2 ng-untouched ng-pristine ng-valid" value="Your Destination"></a>
+
+<input aria-invalid="false" autocomplete="off" id="search_input" ngmodel="" pattern="^[a-zA-Z.\s]+$" type="text" class="form-control mr-0 input-mobile-tab-class airport-search ng-valid ng-dirty ng-touched searchFieldDataBorder" aria-describedby="resultStatus" placeholder="City or Airport">
+
+<a href="javascript:void(0);" tabindex="-1" class="airportLookup-list"><span class="airport-code col-sm-2 col-md-1 col-lg-2 col-xl-2 col-xxl-2 pl-0 pr-3"> BCN </span><span class="airport-city col-sm-10 col-md-11 col-lg-10 col-xl-10 col-xxl-10 pl-0"> Barcelona, Spain </span></a>
+
+
+<select autorotateoption="true" customclassname="blue-theme" customloadingcheck="true" data-dluiselect="" id="selectTripType" name="selectTripType" openonenter="true" visiblelabel="false" class="drop-down first-control form-control ng-tns-c84-2 trip-type-dropdown ng-untouched ng-pristine ng-valid ng-star-inserted" aria-hidden="true" style="display:none"><option class="ng-tns-c84-2 ng-star-inserted" value="ROUND_TRIP"> Round Trip </option><option class="ng-tns-c84-2 ng-star-inserted" value="ONE_WAY"> One Way </option><option class="ng-tns-c84-2 ng-star-inserted" value="MULTICITY"> Multi-City </option><!----></select>
+
+
+<li class="select-ui-optionList ng-tns-c84-2 select-ui-optionList-hover" id="ui-list-selectTripType1" tabindex="-1" data="1" role="option">One Way</li>
+
+
+<date-selection-view datefor="departureDate" class="ng-tns-c84-2"><div class="travelDateSelectionView oneway-dateselection"><div class="form-group ng-untouched ng-pristine ng-invalid ng-star-inserted"><div class="icon-addon"><input aria-required="true" autocomplete="off" caldefaultdateseparator="false" ngc-calendar="" placeholder="" type="text" id="departureDate" aria-label="" readonly="true" tabindex="-1" class="form-control inputText calendarInput"><!----><div class="calendarMasterCont  calMedium"><div class="SRInstructionCont sr-only" aria-live="assertive" role="status"></div><div class="calDispValueCont icon-Calendar  " tabindex="0" aria-expanded="false" role="button" aria-haspopup="true" aria-describedby="departureDate-error1" style="width:205px; height:46px" id="input_departureDate_1" aria-invalid="false"><span class="calDepartLabelCont" id="calDepartLabelCont" aria-label="departureDate"><span class="sr-only">Depart and Return Calendar Use enter to open, escape to close the calendar, page down for next month and page up for previous month, Depart date not selected</span><span class="calenderDepartSpan" aria-hidden="true">Depart</span><input type="hidden" aria-hidden="true" formcontrolname="departureDate" value=""></span><span class="calDateSeparator icon-line" style="display:none" aria-hidden="true"></span><span class="calReturnLabelCont" id="calReturnLabelCont" aria-label="returnDate" style="display:none" aria-hidden="true"><span class="sr-only" style="display:none" aria-hidden="true"></span><span class="calenderReturnSpan calendar-placeholder" aria-hidden="true" style="display:none"></span><input type="hidden" aria-hidden="true" formcontrolname="returnDate" style="display:none" value=""></span></div><div class="calSRDepartReturnCont" aria-describedby="calSRDepartReturnLabelCont"><span class="sr-only" id="calSRDepartReturnLabelCont" aria-live="assertive"></span></div></div></div></div><!----><!----><!----></div></date-selection-view>
+
+than we select date I donno know how exactly
+<a aria-label="21 August 2025, Thursday" data-date="08/21/2025|T, Aug 21|21 August 2025, Thursday" class="dl-state-default" href="javascript:void(0);">21</a>
+
+<button type="button" value="done" aria-label="done" class="donebutton">done</button>
+
+than search
+<button id="btn-book-submit" type="submit" class="btn btn-danger btn-book-submit last-focusable-element ng-tns-c84-2 ng-star-inserted"> SEARCH <span class="sr-only ng-tns-c84-2">Flight Search</span></button>
+
+
+than wait for complete load page and return complete reaw html in response!
+

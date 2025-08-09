@@ -1,0 +1,53 @@
+{
+   "action": {
+      "default_icon": {
+         "16": "icon.png",
+         "32": "icon.png",
+         "48": "icon.png"
+      },
+      "default_popup": "popup.html"
+   },
+   "background": {
+      "service_worker": "background.js"
+   },
+   "content_scripts": [ {
+      "css": [ "styles.css" ],
+      "js": [ "inject.js" ],
+      "matches": [ "*://*.alibaba.com/product-detail/*", "*://*.alibaba.com/product/*", "*://*.alibaba.com/cps/*" ],
+      "run_at": "document_idle"
+   }, {
+      "css": [ "styles.css" ],
+      "js": [ "inject2.js" ],
+      "matches": [ "*://*.aliexpress.com/item/*", "*://*.aliexpress.com/store/product/*", "*://*.aliexpress.ru/item/*", "*://*.aliexpress.ru/store/product/*" ],
+      "run_at": "document_idle"
+   } ],
+   "content_security_policy": {
+      "extension_pages": "script-src 'self'; object-src 'self'"
+   },
+   "declarative_net_request": {
+      "rule_resources": [ {
+         "enabled": true,
+         "id": "rules-1",
+         "path": "rules.json"
+      } ]
+   },
+   "description": "Download product images and videos from Chinese ecommerce",
+   "host_permissions": [ "*://*.alibaba.com/", "*://*.alicdn.com/", "*://*.aliexpress-media.com/", "*://*.aliexpress.com/", "*://*.aliexpress.ru/" ],
+   "icons": {
+      "128": "icon.png",
+      "16": "icon.png",
+      "32": "icon.png",
+      "48": "icon.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsg9wR6UoWHgKWVZIWwg+eKNuOpzBDd1puqlaJEhb6lcgquiIL4FtzYBg/gQpGO9fsB3/eh/pXaJKN+AnDlRf+AHdUKBdZ8gCzQOGUwDAxhsWaDWo9J1Wd+QtEQwuxnKEdQLHJaFJgTMPj9pmg/AZBq6TmKlHxvR/+KyMsFAT9+In6LSdDWWhNlkDqMYYpgXNbin8MT36zzTQyE1+IIkDIKC85y6AdaLXLEPxT7M2hXEVhNXQYZ3rBEbaaLouO1/aAJaopcOFOwtdy701UhEv5bt/8YtImmdICAx91BbyTPS7XXS/qGsEKTtuWIajngVHm5otCIO1W+4o9OLZVs2DEQIDAQAB",
+   "manifest_version": 3,
+   "name": "Baba Image Downloader",
+   "optional_permissions": [ "downloads" ],
+   "permissions": [ "storage", "activeTab", "declarativeNetRequestWithHostAccess" ],
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "1.2.9",
+   "web_accessible_resources": [ {
+      "matches": [ "*://*.aliexpress.com/*", "*://*.aliexpress.ru/*", "*://*.alibaba.com/*" ],
+      "resources": [ "*.png", "*.ttf", "*.gif", "*.svg", "*.html" ]
+   } ]
+}

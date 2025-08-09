@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check out our new extension!</title>
+    <style>
+        @font-face {
+            font-family: 'Nova Flat';
+            font-style: normal;
+            font-weight: 400;
+            src: url(./public/NovaFlat.ttf) format('truetype');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+        }
+
+        html {
+            /* width: 400px; */
+            width: 100%;
+            background: #f9f9f9;
+            /* height: auto; */
+        }
+
+        body {
+            font-family: "Roboto", sans-serif;
+            font-size: 18px;
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+        .banner {
+            border: 1px solid #ccc;
+            padding: 10px;
+            /* width: 100%; */
+            width: 466px;
+            box-sizing: border-box;
+            margin: 20px auto;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            cursor: pointer;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: "Nova Flat", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+            font-size: 20px;
+            color: #26547c;
+            margin-top: 18px;
+        }
+
+        .header img {
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+        }
+
+        .logo-img {
+            height: 50px;
+            /* Adjust the height as needed */
+            width: auto;
+        }
+
+        .main-content {
+            margin-top: 20px;
+        }
+
+        .main-content img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .product-logo {
+            width: 20px;
+            vertical-align: text-top;
+            margin-left: 4px;
+        }
+
+        .product-screenshot {
+            width: 100%;
+            height: auto;
+            margin-top: 10px;
+        }
+
+        .separated-link {
+            display: flex;
+            justify-content: center;
+            margin: 15px 0 15px 0;
+            color: #007BFF;
+            text-decoration: none;
+        }
+
+        .banner-link {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .get-on-webstore {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        footer {
+            margin-top: 20px;
+            font-style: italic;
+            font-weight: normal;
+            font-size: smaller;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="banner">
+        <!-- <button class="close-btn" title="Close">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                <path d="M0 0h24v24H0z" fill="none" />
+                <path d="M18 6L6 18M6 6l12 12" stroke="#000" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg>
+        </button> -->
+        <header class="header">
+            <img class='logo-img' src='icon.png' alt="Logo" />
+            <span>Alibaba Image Downloader</span>
+        </header>
+        <div class="main-content">
+            Dear user! We have created a new extension that might be useful to you! 
+            <a class="separated-link" href="https://chromewebstore.google.com/detail/aliexpress-search-by-imag/mojcpafaidmheogbffjafjopihakmomf?utm_source=baba_downloader_extension&utm_medium=page_banner&utm_campaign=initial_installs" target="_blank"><strong>Aliexpress Search by
+                image</strong> <img class="product-logo" src="banner-logo.png" alt="Product Logo">
+            </a> 
+            It allows you to quickly find similar products on Aliexpress using an image found anywhere on the web. Find out more by clicking the link above!
+            <img class="product-screenshot"
+            src="banner-screenshot.png"
+            alt="Product Screenshot">
+        </div>
+        <a class="banner-link" href="https://chromewebstore.google.com/detail/aliexpress-search-by-imag/mojcpafaidmheogbffjafjopihakmomf?utm_source=baba_downloader_extension&utm_medium=page_banner&utm_campaign=initial_installs" target="_blank">
+            <img class="get-on-webstore"
+            src="available-in-cws.png"
+            alt="Install">
+        </a>
+        <footer>Also, the Alibaba Image Downloader extension has just been updated!</footer>
+    </div>
+<script type="text/javascript" src="aliexpressSearchByImageBanner.js"></script></body>
+
+</html>

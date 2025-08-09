@@ -1,0 +1,44 @@
+{
+   "action": {
+      "default_popup": "popup.html",
+      "default_title": "IPRoyal"
+   },
+   "author": {
+      "email": "affiliate@iproyal.com"
+   },
+   "background": {
+      "service_worker": "background.js",
+      "type": "module"
+   },
+   "content_scripts": [ {
+      "js": [ "content-scripts/content.js" ],
+      "matches": [ "http://localhost/*", "https://*.iproyal.com/*", "https://*.iproyal.dev/*" ]
+   }, {
+      "all_frames": true,
+      "js": [ "content-scripts/share-preferences.js" ],
+      "matches": [ "\u003Call_urls>" ],
+      "run_at": "document_start"
+   }, {
+      "all_frames": true,
+      "js": [ "content-scripts/webrtc-shield.js" ],
+      "matches": [ "\u003Call_urls>" ],
+      "run_at": "document_start",
+      "world": "MAIN"
+   } ],
+   "description": "IPRoyal Proxy Manager allows you to easily control all your proxies in your Browser",
+   "host_permissions": [ "\u003Call_urls>" ],
+   "icons": {
+      "128": "icon/128.png",
+      "16": "icon/16.png",
+      "32": "icon/32.png",
+      "48": "icon/48.png",
+      "96": "icon/96.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2XKKhU4tsmk3tJdFNwA/8IRnB8hTr3ytC/EP9+SAK3VNyjg/oP4wH3COYx/icjB1LHCpNayLm8EELcJCsypgCNWfD9UH0ZKINumzWNc+KRsRYNugNc9t9pLInTfInqcRJY9jR/6UX+mZOOgtO9/oymgIDj7q6/pDc7AQgsuRPj+1dhnhpcoKlqnxjSbZrTQCWcQW9vt/d79uxBDIO3PptRT52cmjQLvwlUYfUoBSoI6YaptPkiFYX6AtMYQGkVYE0StpRVvVOAWwehnA3v6ninZRWsnMGNRh7Xj86KJVGAO70WT6Ebyz5hkgMnDhyFHczYSoXbg35kx+kY3pbTqSEQIDAQAB",
+   "manifest_version": 3,
+   "minimum_chrome_version": "126",
+   "name": "IPRoyal Proxy Manager",
+   "permissions": [ "storage", "proxy", "privacy", "webRequest", "webRequestAuthProvider", "browsingData", "notifications" ],
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "2.1.1"
+}

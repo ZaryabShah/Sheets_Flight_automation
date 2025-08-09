@@ -1,0 +1,34 @@
+[
+    {
+        "id": 1,
+        "action": {
+            "type": "modifyHeaders",
+            "requestHeaders": [
+                {
+                    "header": "User-Agent",
+                    "operation": "remove"
+                },
+                {
+                    "header": "Accept",
+                    "operation": "set",
+                    "value": "image/jpeg"
+                },
+                {
+                    "header": "Referer",
+                    "operation": "remove"
+                },
+                {
+                    "header": "Origin",
+                    "operation": "remove"
+                }
+            ]
+        },
+        "condition": {
+            "urlFilter": "*://*.alicdn.com/*",
+            "excludedInitiatorDomains": ["aliexpress.com", "alibaba.com"],
+            "resourceTypes": [
+                "xmlhttprequest"
+            ]
+        }
+    }
+]

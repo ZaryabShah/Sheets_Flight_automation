@@ -1,0 +1,27 @@
+{
+   "action": {
+      "default_icon": {
+         "128": "/icons/128.png",
+         "16": "/icons/16.png",
+         "32": "/icons/32.png"
+      },
+      "default_popup": "popup.html",
+      "default_title": "Amazon Image Easy Download"
+   },
+   "background": {
+      "service_worker": "service_worker.js"
+   },
+   "description": "Downloadimages,photos,pictures and videos from gallery and variations for Amazon Product and export, export to Excel with one click",
+   "host_permissions": [ "https://api.savemydayapp.com/*" ],
+   "icons": {
+      "128": "/icons/128.png",
+      "16": "/icons/16.png",
+      "32": "/icons/32.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAppx8mW/ydW3ljbyg2AzUZeAxO4dMoa8tPwnR7Q1bUf8wmlUlv/WuLwIZQqn69AKvbxzH2WsqGVBAoZqlqH0EFYHnCSA76Llo35xEiNRFNG4OTv6U6dgjzDw0TbuLvdq3QCEtSKR3PkDvXFa00o3bXEnmwtZMiouRT5xTDLsQVvCow7vlj0aaXp15yusOHIES48JLGVfxl7dxKhgUgAME0Q6NvsKHCSRajMKqSKtg1t75ZX9SgBgSUaXcNrykgg8by7cXY+E36tdG6Tm1WrlQ6r0TNnjm6TfzImjYz4Qee6k/W5bf3rKHLvHDM6m0Ex2mbRBV33kXVt9p3eGpbdWL6wIDAQAB",
+   "manifest_version": 3,
+   "name": "Amazon Image Downloader - Photo & Videos",
+   "permissions": [ "activeTab", "storage", "unlimitedStorage", "scripting", "downloads" ],
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "1.1.1"
+}

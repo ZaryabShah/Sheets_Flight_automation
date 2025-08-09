@@ -1,0 +1,105 @@
+@font-face {
+    font-family: 'Nova Flat';
+    font-style: normal;
+    font-weight: 400;
+    src: url(chrome-extension://__MSG_@@extension_id__/NovaFlat.ttf) format('truetype');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+.dhqab-buttons-container {
+    display: flex;
+    margin-left: 5px;
+    margin-bottom: 5px;
+}
+
+.dhqab-button {
+    border: 1px solid #ff5500;
+    color: #ff5500;
+    padding: 0;
+    outline: none;
+    cursor: pointer;
+    font-family: 'Nova Flat', sans-serif;
+    font-size: 20px;
+    background: white;
+    width: 30px;
+    height: 30px;
+    box-shadow: 2px 5px 5px #888888;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 5px;
+    box-sizing: border-box;
+    transition: all 150ms linear;
+}
+
+.dhqab-button:not(.loading):hover {
+    color: white;
+    background: #ff5500;
+    border: 1px solid white;
+}
+
+.dhqab-button svg {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.dhqab-button:hover svg, .dhqab-button:hover path {
+    fill: white;
+}
+
+.dhqab-button.m-button>.btn-text {
+    transform-origin: 50% 60%;
+}
+
+.dhqab-button.v-button>.btn-text {
+    transform-origin: 50% 55%;
+}
+
+.dhqab-button.d-button>.btn-text {
+    transform-origin: 50% 55%;
+}
+
+.dhqab-button.all-button {
+    margin-left: 15px;
+}
+
+.dhqab-button.all-button svg {
+    /* transform: rotate(90deg); */
+    transform-origin: 50% 43%;
+    padding: 0 5px;
+}
+
+.dhqab-button.html-button svg {
+    padding: 0 2px;
+}
+
+.dhqab-hide {
+    display: none !important;
+}
+
+.dhqab-button.loading .btn-text, .dhqab-button.loading svg {
+    animation: rotate 2s linear infinite;
+    display: none;
+}
+
+/*
+    LOADER
+*/
+.dhqab-loader {
+    display: none;
+}
+
+.dhqab-button.loading .dhqab-loader {
+    display: initial;
+}
+
+/*
+    KEYFRAMES
+*/
+
+/* @keyframes rotate {
+    100% {
+        transform: rotate(360deg);
+    }
+} */

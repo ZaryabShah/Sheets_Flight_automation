@@ -1,0 +1,23 @@
+{
+  "name": "delta-flight-automation",
+  "version": "1.0.0",
+  "description": "Delta flight search automation using Scrappey.com API",
+  "main": "delta_flight_fetcher.js",
+  "scripts": {
+    "start": "node delta_flight_fetcher.js",
+    "test": "node delta_flight_fetcher.js --from=JFK --to=LAX --date=2025-08-25",
+    "multi": "node delta_flight_fetcher.js --multi-page --from=MCO --to=BCN --date=2025-08-21 --max-pages=3"
+  },
+  "keywords": [
+    "delta",
+    "flight",
+    "automation",
+    "scrappey",
+    "graphql"
+  ],
+  "author": "Flight Automation",
+  "license": "MIT",
+  "dependencies": {
+    "scrappey-wrapper": "^1.0.8"
+  }
+}

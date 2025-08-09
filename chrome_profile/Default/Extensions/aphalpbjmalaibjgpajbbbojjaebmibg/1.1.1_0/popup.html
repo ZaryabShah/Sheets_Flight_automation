@@ -1,0 +1,285 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Amazon Image Easy Download - geckoinfo.top</title>
+  <link rel="stylesheet" href="styles/popup.css">
+</head>
+
+<body>
+  <div class="container-main">
+    <div class="bg-light py-2 px-1">
+      <div class="d-flex">
+        <div class="flex-grow-1">
+          <a class="navbar-brand d-flex align-items-center" href="#">
+            <img src="icons/128.png" alt="Logo" style="width: 24px;">
+            <span class="d-inline-block logo-title text-bolder">Amazon Image Easy Download</span>
+          </a>
+        </div>
+        <div class="px-3"> 
+          <span class="text-primary text-center" id="pro-tag" style="font-size: 0.7rem;"><i class="bi bi-box2-heart-fill"></i>&nbsp;PRO</span>
+        </div>
+      </div>
+
+    </div>
+    <div class="d-flex flex-row">
+      <div class="d-flex flex-column" style="width: 4rem;">
+        <ul class="nav nav-flush flex-column mb-auto text-center">
+          <li>
+            <a href="#home" class="nav-link active py-3" aria-current="page" title="Home" data-bs-toggle="tab">
+              <i class="bi bi-house-door-fill"></i>
+            </a>
+          </li>
+          <li>
+            <a href="#setting" class="nav-link py-3" title="setting" data-bs-toggle="tab" data-bs-target="#setting">
+              <i class="bi bi-gear-fill"></i>
+            </a>
+          </li>
+          <li>
+            <a href="#joinus" class="nav-link py-3" title="join us" id="a-joinus" data-bs-toggle="tab"
+              data-bs-target="#joinus">
+              <i class="bi bi-box2-heart-fill"></i>
+            </a>
+          </li>
+
+        </ul>
+      </div>
+
+      <!-- Tab panes -->
+      <div class="tab-content main-content mt-1">
+ 
+        <div class="d-flex justify-content-center mt-5" id="div-loading-status">
+          <div class="spinner-grow spinner-grow-sm text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <div class="spinner-grow spinner-grow-sm text-success ms-2" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <div class="spinner-grow spinner-grow-sm text-danger ms-2" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <div class="spinner-grow spinner-grow-sm text-warning ms-2" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+
+        <div class="tab-pane active container is-small" id="home">
+
+          <div class="tip-page">
+            <p class="mt-3 fw-bolder text-center text-warning fs-2" > <i class="bi bi-lightbulb-fill"></i></p>
+            <p class="mt-3 fw-bolder text-center fs-6" >Open an Amazon product listing to start download Images & Videos!</p>
+          </div>
+
+          <input type="hidden" id="input-product-id" value="">
+          <ul class="nav nav-tabs" id="productTab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link btn active" id="image-tab" data-bs-toggle="tab" data-bs-target="#image-tab-pane"
+                type="button" role="tab" aria-controls="image-tab-pane"
+                aria-selected="true"><i class="bi bi-card-image"></i>&nbsp;Images<span></span></button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="video-tab" data-bs-toggle="tab" data-bs-target="#video-tab-pane"
+                type="button" role="tab" aria-controls="video-tab-pane"
+                aria-selected="false"><i class="bi bi-film"></i>&nbsp;Videos<span></span></button>
+            </li>
+
+          </ul>
+          <div class="tab-content" id="productTabContent">
+            <!-- image start-->
+            <div class="tab-pane fade show active" id="image-tab-pane" role="tabpanel" aria-labelledby="image-tab"
+              tabindex="0">
+              <div class="d-flex flex-row-reverse mt-2">
+                <div class="p-2 div-opt">
+                  <button type="button" class="btn btn-sm btn-outline-primary ml-1 d-flex flex-row"
+                    id="all-image-btn-download">
+                    <i class="bi bi-download"></i>
+                    &nbsp;&nbsp;Download<span></span>
+                  </button>
+                  <div class="progress progress-div mt-1" id="progress-all-images" style="display: none;" role="progressbar" aria-valuenow="2" aria-valuemin="0" aria-valuemax="100" style="display: flex;">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" style="width: 50%;"></div>
+                  </div>
+                  <span style="margin-left: 0%;font-size: 0.35rem;" class="progress-span"  id="span-all-images"></span>
+                </div>
+                <div class="p-2">
+                  <button type="button" class="btn btn-sm btn-outline-success d-flex flex-row" id="all-image-btn-export">
+                    <i class="bi bi-file-earmark-spreadsheet"></i>
+                    &nbsp;&nbsp;Export<span></span>
+                  </button>
+
+                </div>
+
+              </div>
+              <div class="mt-2 image-card-content">
+
+
+              </div>
+            </div>
+            <!-- image end-->
+            <!-- video start-->
+            <div class="tab-pane fade" id="video-tab-pane" role="tabpanel" aria-labelledby="video-tab" tabindex="0">
+              <div class="d-flex flex-row-reverse mt-2">
+                <div class="p-2">
+                  <button type="button" class="btn btn-sm btn-outline-primary ml-1 d-flex flex-row"
+                    id="all-video-btn-download">
+                    <i class="bi bi-download"></i>
+                    &nbsp;&nbsp;Download
+                  </button>
+                  <div class="progress progress-div mt-1" id="progress-all-videos" style="display: none;" role="progressbar" aria-valuenow="2" aria-valuemin="0" aria-valuemax="100" style="display: flex;">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" style="width: 1%;"></div>
+                  </div>
+                  <span style="margin-left: 0%;font-size: 0.35rem;" class="progress-span"  id="span-all-videos"></span>
+                </div>
+              </div>
+              <div class="video-card-content"></div>
+
+
+            </div>
+            <!-- video start-->
+          </div>
+
+        </div>
+        <div class="tab-pane container" id="setting">
+          <div class="mt-3 text-bolder text-center" >Your Current Token</div>
+          <p class="fw-lighter mt-1 text-center" style="font-size: 0.6rem;" id="current-license-key"></p>
+          <div class="unsubscription-div">
+              <p class="fw-lighter fst-italic mt-3 text-start" style="font-size: 0.6rem;">
+                If you already pay for a Premium subscription for Auto-Save & Automation, Please enter here the  
+                <span class="fw-bold">token</span> you received in your weclcome Email.
+              </p>
+              <div class="mt-2">
+                <div class="form-group mr-0 mb-2">
+                  <input type="text" class="form-control form-control-sm" id="input-license-key">
+                </div>
+              </div>
+
+              <div class="mt-3 w-100 text-center">
+                <button type="button" id="btn-license-key" class="btn btn-primary btn-sm w-50">
+                  <i class="bi bi-save2"></i>&nbsp;&nbsp;Update Token
+                </button>
+              </div>
+              <p class="text-center mt-1 tip-p"  style="font-size: 0.6rem;display: none;">Tips:&nbsp;<span class="fw-light text-danger" id="tip-p">It will only work with a vaild preminum token</p>
+              <p class="text-center mt-4"  style="font-size: 0.6rem;">Note:&nbsp;<span class="fw-light">It will only work with a vaild preminum token</p>
+          </div>
+          <div class="subscription-div mt-3">
+            <hr>
+            <p class="mt-3 fw-bolder text-center text-danger fs-2" ><i class="bi bi-heart"></i></p>
+            <p class="mt-3 mb-0 fw-bolder text-center fs-6" >Thinks for the support!</p>
+            <p class="my-0 text-center" >Your <span class="tfw-bolder text-primary">PRO</span> membership will renewed on </p>
+            <p class="fw-bolder text-center mt-0 mb-2" id="membership-time">6/15/2023,5:02:12 PM</p>
+          </div>
+        </div>
+        <div class="tab-pane container" id="joinus">
+
+          <section>
+            <table class="table mb-0" style="font-size: 13px;">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th><span>FREE</span></th>
+                  <th><span class="text-primary"><i class="bi bi-box2-heart-fill"></i> PRO</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span>Download Images by Variants <span class="fw-lighter">(*.zip)</span></span></td>
+                  <td>
+                    <a href="#" class="text-decoration-none">
+                      <i class="bi bi-check-circle"></i>
+                    </a>
+                  </td>
+                  <td>
+                    <a href="#" class="text-decoration-none">
+                      <i class="bi bi-check-circle"></i>
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td><span>Export Images by Variants <span class="fw-lighter">(Excel)</span></span></td>
+                  <td><a href="#" class="text-decoration-none">
+                      <i class="bi bi-check-circle"></i>
+                    </a></td>
+                  <td><a href="#" class="text-decoration-none">
+                      <i class="bi bi-check-circle"></i>
+                    </a></td>
+                </tr>
+                <tr>
+                  <td><span>One Click Download All Images<span class="fw-lighter">(*.zip)</span></span></td>
+                  <td><i class="bi bi-check-circle"></i></td>
+                  <td><a href="#" class="text-decoration-none">
+                      <i class="bi bi-check-circle"></i>
+                    </a></td>
+                </tr>
+                <tr>
+                  <td><span>One Click Export All Images <span class="fw-lighter">(Excel)</span></span></td>
+                  <td>
+                    <i class="bi bi-check-circle"></i>
+                  </td>
+                  <td><a href="#" class="text-decoration-none">
+                      <i class="bi bi-check-circle"></i>
+                    </a></td>
+                </tr>
+                <tr>
+                  <td><span>One Click Export All Videos <span class="fw-lighter">(.zip)</span></span></td>
+                  <td>
+                    <i class="bi bi-check-circle"></i>
+                  </td>
+                  <td><a href="#" class="text-decoration-none">
+                      <i class="bi bi-check-circle"></i>
+                    </a></td>
+                </tr>
+                <tr>
+                  <td><span>One Click Download Video</span></td>
+                  <td>
+                    <i class="bi bi-check-circle"></i>
+                  </td>
+                  <td><a href="#" class="text-decoration-none">
+                      <i class="bi bi-check-circle"></i>
+                    </a></td>
+                </tr>
+              </tbody>
+            </table>
+
+          </section>
+
+          <div class="mt-2 tag bg-warning text-center text-weight-bold" style="font-size: 0.8rem;"><i class="bi bi-clock"></i>&nbsp;&nbsp;LIMITED TIME OFFER </div>
+
+          <div class="text-center mt-2" style="font-size: 28px;"><span
+              class="text-weight-bold text-danger"><span>$9.99<del class="text-body-tertiary mx-1"
+                  style="font-size:15px;">$19</del></span><span class="text-body-tertiary"
+                style="font-size: 15px;">/monthly</span></span></div>
+          <div class="mt-3 text-danger text-center" style="font-size: 0.6rem;">7-DAY MONEY BACK GUARANTEE </div>
+          
+          <div class="row mt-2 mx-auto">
+            <button type="button" class="btn btn-danger buy-now-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-alt"
+                viewBox="0 0 16 16">
+                <path
+                  d="M1 13.5a.5.5 0 0 0 .5.5h3.797a.5.5 0 0 0 .439-.26L11 3h3.5a.5.5 0 0 0 0-1h-3.797a.5.5 0 0 0-.439.26L5 13H1.5a.5.5 0 0 0-.5.5zm10 0a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 0-1h-3a.5.5 0 0 0-.5.5z">
+                </path>
+              </svg>
+              Join the family
+            </button>
+          </div>
+          <div class="mt-2 pl-1 text-start" style="font-size: 12px;">
+            <span class="checkbox"><input type="checkbox" id="agree-checkbox"> I agree to the 
+              <span class="text-primary text-decoration-underline terms-of-service">Terms Of Service</span>
+            </span>
+          </div>
+          <div class="mt-0 pl-1 text-start text-danger" style="font-size: 12px; display: none;" id="agree-checkbox-tips">Please check You agree the Terms Of Service</div>
+          <div class="mt-1">
+            <p class="text-body-tertiary mb-0" style="font-size: 10px;"><i class="bi bi-lock"></i> We use <span class="text-dark text-weight-bold">Stripe</span> to process purchases and do not know your card details. No Stripe account is needed. </p>
+            <p class="text-center"><img src="img/pay-secure-stripe.jpg" style="width: 100%;" alt=""></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+
+</html>

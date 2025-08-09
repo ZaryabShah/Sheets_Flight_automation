@@ -31,7 +31,7 @@ class DeltaFlightAutomationAdvanced:
         self.timeout = timeout
         self.driver = None
         self.wait = None
-        self.use_proxy = False
+        self.use_proxy = True
         self.setup_driver(headless)
         
     def setup_driver(self, headless=False):
@@ -43,7 +43,7 @@ class DeltaFlightAutomationAdvanced:
             
             # Proxy configuration if enabled
             if self.use_proxy:
-                proxy_server = "https://us-pr.oxylabs.io:10000"
+                proxy_server = "https://pr.oxylabs.io:10000"
                 print(f"🌐 Using proxy: {proxy_server}")
                 chrome_options.add_argument(f'--proxy-server={proxy_server}')
             
@@ -155,20 +155,26 @@ class DeltaFlightAutomationAdvanced:
         """Navigate to Delta flight search page"""
         try:
             print("🔄 Navigating to Delta flight search...")
-            self.driver.get("https://www.delta.com/flightsearch/book-a-flight")
+            self.driver.get("https://www.delta.com/")
             
             # Wait for page to load completely
             WebDriverWait(self.driver, 30).until(
                 lambda driver: driver.execute_script("return document.readyState") == "complete"
             )
+            # time.sleep(3)  # Additional wait for dynamic content
+            # self.driver.get("https://www.delta.com/")
             
-            time.sleep(3)  # Additional wait for dynamic content
-            self.driver.get("https://www.delta.com/flightsearch/book-a-flight")
+            # # Wait for page to load completely
+            # WebDriverWait(self.driver, 30).until(
+            #     lambda driver: driver.execute_script("return document.readyState") == "complete"
+            # )
+            # time.sleep(3)  # Additional wait for dynamic content
+            # self.driver.get("https://www.delta.com/flightsearch/book-a-flight")
             
-            # Wait for page to load completely
-            WebDriverWait(self.driver, 30).until(
-                lambda driver: driver.execute_script("return document.readyState") == "complete"
-            )
+            # # Wait for page to load completely
+            # WebDriverWait(self.driver, 30).until(
+            #     lambda driver: driver.execute_script("return document.readyState") == "complete"
+            # )
             
             time.sleep(5)  # Additional wait for dynamic content
             print("✅ Successfully navigated to Delta website")
@@ -187,7 +193,7 @@ class DeltaFlightAutomationAdvanced:
             from_selectors = [
                 # (By.XPATH, "//a[contains(@aria-label, 'From')]"),
                 # (By.XPATH, "//div[contains(@class, 'departure')]//a"),
-                (By.XPATH, "/html/body/idp-root/div/div[2]/idp-advance-search/div/div[1]/div[2]/idp-book-widget/div/ngc-book/div[1]/div/form/div[1]/div/div[1]/div[1]/div[1]/div[1]/a[1]"),
+                (By.XPATH, "/html/body/idp-root/ngc-global-nav/header/div/div[1]/ngc-book/div[1]/div/form/div[1]/div/div[1]/div[1]/div[1]/div[1]/a[1]"),
                 # (By.CSS_SELECTOR, "a[aria-label*='From']"),
                 # (By.XPATH, "//a[1][contains(@class, 'airport')]")
             ]
@@ -201,7 +207,7 @@ class DeltaFlightAutomationAdvanced:
             input_selectors = [
                 # (By.XPATH, "//input[@type='text']"),
                 # (By.XPATH, "//input[contains(@placeholder, 'airport')]"),
-                (By.XPATH, "/html/body/idp-root/div/div[1]/ngc-global-nav/header/modal-container/div/div/ngc-airport-lookup-modal/div/div[2]/tabset/div/tab/div/div/div[1]/input"),
+                (By.XPATH, "/html/body/modal-container/div/div/ngc-airport-lookup-modal/div/div[2]/tabset/div/tab[1]/div/div/div[1]/input"),
                 # (By.CSS_SELECTOR, "input[type='text']"),
                 # (By.XPATH, "//input[contains(@class, 'airport')]")
             ]
@@ -215,7 +221,7 @@ class DeltaFlightAutomationAdvanced:
             suggestion_selectors = [
                 # (By.XPATH, "//li[1]"),
                 # (By.XPATH, "//ul/li[1]"),
-                (By.XPATH, "/html/body/idp-root/div/div[1]/ngc-global-nav/header/modal-container/div/div/ngc-airport-lookup-modal/div/div[2]/tabset/div/tab/div/div/div[2]/div/ul/li[1]"),
+                (By.XPATH, "/html/body/modal-container/div/div/ngc-airport-lookup-modal/div/div[2]/tabset/div/tab[1]/div/div/div[2]/div"),
                 # (By.CSS_SELECTOR, "li:first-child"),
                 # (By.XPATH, "//div[contains(@class, 'airport-option')][1]")
             ]
@@ -239,7 +245,7 @@ class DeltaFlightAutomationAdvanced:
             to_selectors = [
                 # (By.XPATH, "//a[contains(@aria-label, 'To')]"),
                 # (By.XPATH, "//div[contains(@class, 'arrival')]//a"),
-                (By.XPATH, "/html/body/idp-root/div/div[2]/idp-advance-search/div/div[1]/div[2]/idp-book-widget/div/ngc-book/div[1]/div/form/div[1]/div/div[1]/div[1]/div[1]/div[1]/a[2]"),
+                (By.XPATH, "/html/body/idp-root/ngc-global-nav/header/div/div[1]/ngc-book/div[1]/div/form/div[1]/div/div[1]/div[1]/div[1]/div[1]/a[2]"),
                 (By.CSS_SELECTOR, "a[aria-label*='To']"),
                 (By.XPATH, "//a[2][contains(@class, 'airport')]")
             ]
@@ -253,7 +259,7 @@ class DeltaFlightAutomationAdvanced:
             input_selectors = [
                 # (By.XPATH, "//input[@type='text']"),
                 # (By.XPATH, "//input[contains(@placeholder, 'airport')]"),
-                (By.XPATH, "/html/body/idp-root/div/div[1]/ngc-global-nav/header/modal-container/div/div/ngc-airport-lookup-modal/div/div[2]/tabset/div/tab/div/div/div[1]/input"),
+                (By.XPATH, "/html/body/modal-container/div/div/ngc-airport-lookup-modal/div/div[2]/tabset/div/tab[1]/div/div/div[1]/input"),
                 (By.CSS_SELECTOR, "input[type='text']")
             ]
             
@@ -266,7 +272,7 @@ class DeltaFlightAutomationAdvanced:
             suggestion_selectors = [
                 # (By.XPATH, "//li[1]"),
                 # (By.XPATH, "//ul/li[1]"),
-                (By.XPATH, "/html/body/idp-root/div/div[1]/ngc-global-nav/header/modal-container/div/div/ngc-airport-lookup-modal/div/div[2]/tabset/div/tab/div/div/div[2]/div"),
+                (By.XPATH, "/html/body/modal-container/div/div/ngc-airport-lookup-modal/div/div[2]/tabset/div/tab[1]/div/div/div[2]/div/ul/li[1]"),
                 (By.CSS_SELECTOR, "li:first-child")
             ]
             
@@ -288,9 +294,9 @@ class DeltaFlightAutomationAdvanced:
             # Trip type dropdown selectors
             dropdown_selectors = [
                 # (By.XPATH, "//span[contains(@class, 'trip-type')]"),
-                (By.XPATH, "/html/body/idp-root/div/div[2]/idp-advance-search/div/div[1]/div[2]/idp-book-widget/div/ngc-book/div[1]/div/form/div[1]/div/div[1]/div[1]/div[2]/span/span[1]"),
+                (By.XPATH, "/html/body/idp-root/ngc-global-nav/header/div/div[1]/ngc-book/div[1]/div/form/div[1]/div/div[1]/div[1]/div[2]/select"),
                 (By.CSS_SELECTOR, "span[class*='trip-type']"),
-                (By.XPATH, "//div[contains(@class, 'trip-type')]")
+                (By.XPATH, "/html/body/idp-root/ngc-global-nav/header/div/div[1]/ngc-book/div[1]/div/form/div[1]/div/div[1]/div[1]/div[2]")
             ]
             
             if not self.smart_wait_and_click(dropdown_selectors, description="trip type dropdown"):
@@ -303,17 +309,17 @@ class DeltaFlightAutomationAdvanced:
                 "round_trip": [
                     # (By.XPATH, "//li[1]"),
                     # (By.XPATH, "//span[contains(text(), 'Round')]"),
-                    (By.XPATH, "/html/body/idp-root/div/div[2]/idp-advance-search/div/div[1]/div[2]/idp-book-widget/div/ngc-book/div[1]/div/form/div[1]/div/div[1]/div[1]/div[2]/span/span[2]/ul/li[1]")
+                    (By.XPATH, "/html/body/idp-root/ngc-global-nav/header/div/div[1]/ngc-book/div[1]/div/form/div[1]/div/div[1]/div[1]/div[2]/span/span[2]/ul/li[1]")
                 ],
                 "one_way": [
                     # (By.XPATH, "//li[2]"),
                     # (By.XPATH, "//span[contains(text(), 'One')]"),
-                    (By.XPATH, "/html/body/idp-root/div/div[2]/idp-advance-search/div/div[1]/div[2]/idp-book-widget/div/ngc-book/div[1]/div/form/div[1]/div/div[1]/div[1]/div[2]/span/span[2]/ul/li[2]")
+                    (By.XPATH, "/html/body/idp-root/ngc-global-nav/header/div/div[1]/ngc-book/div[1]/div/form/div[1]/div/div[1]/div[1]/div[2]/span/span[2]/ul/li[2]")
                 ],
                 "multi_city": [
                     # (By.XPATH, "//li[3]"),
                     # (By.XPATH, "//span[contains(text(), 'Multi')]"),
-                    (By.XPATH, "/html/body/idp-root/div/div[2]/idp-advance-search/div/div[1]/div[2]/idp-book-widget/div/ngc-book/div[1]/div/form/div[1]/div/div[1]/div[1]/div[2]/span/span[2]/ul/li[3]")
+                    (By.XPATH, "/html/body/idp-root/ngc-global-nav/header/div/div[1]/ngc-book/div[1]/div/form/div[1]/div/div[1]/div[1]/div[2]/span/span[2]/ul/li[3]")
                 ]
             }
             
@@ -344,9 +350,9 @@ class DeltaFlightAutomationAdvanced:
             
             # Date field selectors
             date_selectors = [
-                (By.XPATH, "/html/body/idp-root/div/div[2]/idp-advance-search/div/div[1]/div[2]/idp-book-widget/div/ngc-book/div[1]/div/form/div[1]/div/div[1]/div[1]/div[3]/date-selection-view/div/div/div/div/div[2]"),
+                (By.XPATH, "/html/body/idp-root/ngc-global-nav/header/div/div[1]/ngc-book/div[1]/div/form/div[1]/div/div[1]/div[1]/div[3]/date-selection-view"),
                 (By.CSS_SELECTOR, "div[class*='depart']"),
-                (By.XPATH, "//div[contains(@class, 'depart')]"),
+                (By.XPATH, "/html/body/idp-root/ngc-global-nav/header/div/div[1]/ngc-book/div[1]/div/form/div[1]/div/div[1]/div[1]/div[3]"),
                 (By.XPATH, "//input[contains(@placeholder, 'Depart')]")
             ]
             
@@ -384,7 +390,7 @@ class DeltaFlightAutomationAdvanced:
             # Click Done button
             done_selectors = [
                 # (By.XPATH, "//button[contains(text(), 'Done')]"),
-                (By.XPATH, "/html/body/idp-root/div/div[2]/idp-advance-search/div/div[1]/div[2]/idp-book-widget/div/ngc-book/div[1]/div/form/div[1]/div/div[1]/div[1]/div[3]/date-selection-view/div/div/div/div/div[4]/div/div[3]/button[2]"),
+                (By.XPATH, "/html/body/idp-root/ngc-global-nav/header/div/div[1]/ngc-book/div[1]/div/form/div[1]/div/div[1]/div[1]/div[3]/date-selection-view/div/div/div/div/div[4]/div/div[3]/button[2]"),
                 (By.CSS_SELECTOR, "button[class*='done']"),
                 (By.XPATH, "//button[contains(@class, 'done')]")
             ]
@@ -769,7 +775,7 @@ class DeltaFlightAutomationAdvanced:
             # Search button selectors
             search_selectors = [
                 # (By.XPATH, "//button[contains(text(), 'Search')]"),
-                (By.XPATH, "/html/body/idp-root/div/div[2]/idp-advance-search/div/div[1]/div[2]/idp-book-widget/div/ngc-book/div[1]/div/form/div[2]/div/div[2]/div[2]/button"),
+                (By.XPATH, "/html/body/idp-root/ngc-global-nav/header/div/div[1]/ngc-book/div[1]/div/form/div[1]/div/div[2]/button"),
                 # (By.CSS_SELECTOR, "button[class*='search']"),
                 # (By.XPATH, "//button[contains(@class, 'search')]"),
                 # (By.XPATH, "//input[@type='submit']")

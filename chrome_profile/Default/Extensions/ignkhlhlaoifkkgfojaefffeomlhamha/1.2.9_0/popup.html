@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <img class='logo-img' src='icon.png' />
+        <span>Alibaba Image Downloader</span>
+    </header>
+    <main>
+        <section class='options-container'>
+            <label>
+                <input type="checkbox" id="showDownloadButtons" />
+                Show download icons
+            </label>
+            <label>
+                <input type="checkbox" id="shouldZip" />
+                Zip files
+            </label>
+        </section>
+        <section class='buttons-container'>
+            <button data-action='main-download'>Main</button>
+            <button data-action='variant-download'>Variant</button>
+            <button data-action='description-download'>Description</button>
+            <button data-action='all-download'>All</button>
+            <button data-action='text-download'>Description HTML</button>
+        </section>
+    </main>
+    <footer>
+        <a class="banner-link hide" href="https://chromewebstore.google.com/detail/alibaba-search-by-image/aomhnefjgcphaciljfhaiecaoaiancgp?utm_source=baba_downloader_extension&utm_medium=popup_banner&utm_campaign=initial_installs" target="_blank" title="Check out our new extension!">
+            <img class="ad-banner" src="https://lh3.googleusercontent.com/pKBurZbFOTG4Vs2BKWdbgCfQk-G3wkeguW7nh8UZk-Yi3U6uq14Roy9--XTaVEhRbQQUV_QB-T1LtCmy-K2FBbXmGg=s275-w275-h175" />
+        </a>
+    </footer>
+<script type="text/javascript" src="popup.js"></script></body>
+
+</html>
